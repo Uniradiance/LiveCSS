@@ -1,0 +1,447 @@
+
+:root {
+    --bg-color: #1e1e1e;
+    --surface-color: #2a2a2a;
+    --surface-hover-color: #3c3c3c;
+    --border-color: #444;
+    --text-color: #e0e0e0;
+    --text-secondary-color: #9e9e9e;
+    --primary-color: #4f46e5;
+    --primary-hover-color: #6366f1;
+    --danger-color: #f44336;
+    --danger-hover-color: #ef5350;
+    --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+}
+
+#tm-css-config-panel {
+    position: fixed;
+    top: 50px;
+    right: 20px;
+    width: 380px;
+    max-height: 85vh;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    z-index: 999999;
+    font-family: var(--font-family);
+    font-size: 14px;
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    resize: both;
+    min-width: 350px;
+    min-height: 250px;
+}
+
+#tm-css-config-panel.hidden {
+    display: none;
+}
+
+/* --- Panel Header --- */
+#tm-css-config-panel .panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    background-color: var(--surface-color);
+    border-bottom: 1px solid var(--border-color);
+    cursor: grab;
+    flex-shrink: 0;
+}
+
+#tm-css-config-panel .panel-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+#tm-css-config-panel .btn-close-panel {
+    color: var(--text-secondary-color);
+}
+#tm-css-config-panel .btn-close-panel:hover {
+    color: var(--text-color);
+}
+
+/* --- NEW Match Pattern Container --- */
+#tm-css-config-panel .match-pattern-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: var(--bg-color);
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+#tm-css-config-panel .hostname-label {
+    font-weight: 500;
+    color: var(--text-secondary-color);
+    white-space: nowrap;
+    font-size: 13px;
+}
+
+#tm-css-config-panel #match-pattern-input {
+    flex-grow: 1;
+    font-family: 'Menlo', 'Consolas', monospace;
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+#tm-css-config-panel #match-pattern-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.4);
+}
+
+/* --- Configs Container --- */
+#tm-css-configs-container {
+    padding: 8px;
+    overflow-y: auto;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+/* Custom scrollbar */
+#tm-css-configs-container::-webkit-scrollbar { width: 8px; }
+#tm-css-configs-container::-webkit-scrollbar-track { background: var(--bg-color); }
+#tm-css-configs-container::-webkit-scrollbar-thumb { background: var(--surface-hover-color); border-radius: 4px; }
+#tm-css-configs-container::-webkit-scrollbar-thumb:hover { background: #555; }
+
+
+/* --- Config Item (Accordion) --- */
+#tm-css-config-panel .config-item {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--surface-color);
+    transition: background-color 0.2s ease;
+}
+
+#tm-css-config-panel .config-item:hover {
+    background-color: var(--surface-hover-color);
+}
+
+#tm-css-config-panel .config-item-header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    gap: 8px;
+}
+
+#tm-css-config-panel .config-item-header .chevron {
+    transition: transform 0.2s ease-in-out;
+    color: var(--text-secondary-color);
+    flex-shrink: 0;
+}
+
+#tm-css-config-panel .config-item.collapsed .config-item-header .chevron {
+    transform: rotate(-90deg);
+}
+
+#tm-css-config-panel .selector-input {
+    flex-grow: 1;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 14px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    outline: none;
+}
+#tm-css-config-panel .selector-input:focus {
+    background-color: var(--bg-color);
+}
+
+#tm-css-config-panel .config-item-header-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+#tm-css-config-panel .element-index-input {
+    width: 40px;
+    text-align: center;
+    padding: 4px;
+    -moz-appearance: textfield; /* Firefox */
+}
+#tm-css-config-panel .element-index-input::-webkit-outer-spin-button,
+#tm-css-config-panel .element-index-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#tm-css-config-panel .config-item-body {
+    max-height: 1000px; /* High value for transition */
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+    padding: 0 12px 12px 12px;
+    border-top: 1px solid transparent;
+}
+
+#tm-css-config-panel .config-item.collapsed .config-item-body {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    overflow: hidden;
+}
+#tm-css-config-panel .config-item:not(.collapsed) .config-item-body {
+     border-top-color: var(--border-color);
+}
+
+
+/* --- Inputs and Buttons --- */
+#tm-css-config-panel input[type="text"],
+#tm-css-config-panel input[type="number"],
+#tm-css-config-panel textarea {
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: 4px;
+    padding: 6px 8px;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+    min-width: 0;
+    font-family: 'Menlo', 'Consolas', monospace;
+}
+
+#tm-css-config-panel input:focus,
+#tm-css-config-panel textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.4);
+}
+#tm-css-config-panel input[type="text"],
+#tm-css-config-panel input[type="number"] {
+    font-family: inherit;
+}
+
+
+#tm-css-config-panel button {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+#tm-css-config-panel .btn-icon {
+    padding: 4px;
+    background-color: transparent;
+    color: var(--text-secondary-color);
+}
+#tm-css-config-panel .btn-icon:hover {
+    background-color: var(--surface-hover-color);
+    color: var(--text-color);
+}
+#tm-css-config-panel .btn-icon.btn-delete:hover {
+    color: var(--danger-color);
+}
+
+/* --- Toggle Switch --- */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 34px;
+    height: 20px;
+}
+.toggle-switch input { display: none; }
+.toggle-switch .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    transition: .4s;
+    border-radius: 20px;
+}
+.toggle-switch .slider:before {
+    position: absolute;
+    content: "";
+    height: 12px;
+    width: 12px;
+    left: 3px;
+    bottom: 3px;
+    background-color: var(--text-secondary-color);
+    transition: .4s;
+    border-radius: 50%;
+}
+.toggle-switch input:checked + .slider { background-color: var(--primary-color); border-color: var(--primary-color);}
+.toggle-switch input:checked + .slider:before {
+    transform: translateX(14px);
+    background-color: white;
+}
+
+/* --- Style Editor --- */
+#tm-css-config-panel .config-item-body > label {
+    display: block;
+    margin: 12px 0 6px;
+    font-weight: 500;
+    color: var(--text-secondary-color);
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+#tm-css-config-panel .styles-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+#tm-css-config-panel .style-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+#tm-css-config-panel .style-row input {
+    flex: 1;
+    min-width: 0;
+}
+#tm-css-config-panel .btn-delete-style { color: var(--text-secondary-color); }
+#tm-css-config-panel .btn-delete-style:hover { color: var(--danger-color); background: none; }
+
+#tm-css-config-panel .btn-add-style, #tm-css-config-panel .btn-add-pseudo {
+    font-size: 13px;
+    color: var(--text-secondary-color);
+    padding: 4px 8px;
+    margin-top: 8px;
+    border: 1px dashed var(--border-color);
+}
+#tm-css-config-panel .btn-add-style:hover, #tm-css-config-panel .btn-add-pseudo:hover {
+    color: var(--text-color);
+    border-color: var(--text-secondary-color);
+    background-color: var(--surface-hover-color);
+}
+
+/* --- Pseudo Styles --- */
+#tm-css-config-panel .pseudo-style-block {
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 8px;
+    margin-top: 8px;
+    background-color: rgba(0,0,0,0.1);
+}
+#tm-css-config-panel .pseudo-style-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+#tm-css-config-panel .pseudo-style-header input {
+    flex-grow: 1;
+}
+
+/* --- Global JS Editor --- */
+#tm-css-config-panel .global-js-container {
+    padding: 0 12px;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--surface-color);
+    flex-shrink: 0;
+}
+
+#tm-css-config-panel .js-editor-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    font-weight: 500;
+    color: var(--text-secondary-color);
+    font-size: 12px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+#tm-css-config-panel .js-label-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#tm-css-config-panel .js-editor-label .chevron {
+    transition: transform 0.2s ease-in-out;
+    color: var(--text-secondary-color);
+    flex-shrink: 0;
+}
+
+#tm-css-config-panel .global-js-container.collapsed .js-editor-label .chevron {
+    transform: rotate(-90deg);
+}
+
+#tm-css-config-panel .js-editor-body {
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out, padding-bottom 0.3s ease-in-out;
+    padding-bottom: 12px;
+}
+
+#tm-css-config-panel .global-js-container.collapsed .js-editor-body {
+    max-height: 0;
+    padding-bottom: 0;
+    overflow: hidden;
+}
+
+#tm-css-config-panel .js-editor-textarea {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 675px;
+    resize: vertical;
+}
+
+
+/* --- Panel Actions (Footer) --- */
+#tm-css-config-panel .panel-actions {
+    padding: 12px;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--surface-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+#tm-css-config-panel .btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 500;
+}
+#tm-css-config-panel .btn-primary:hover {
+    background-color: var(--primary-hover-color);
+}
+
+#tm-css-config-panel .secondary-actions {
+    display: flex;
+    gap: 8px;
+}
+
+#tm-css-config-panel .btn-secondary {
+    background-color: var(--surface-hover-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary-color);
+    font-size: 13px;
+    padding: 4px 10px;
+}
+#tm-css-config-panel .btn-secondary:hover {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border-color: var(--text-secondary-color);
+}
+
+#tm-css-config-panel .btn-reset { color: #ffab91; }
+#tm-css-config-panel .btn-reset:hover { border-color: #ffab91; background-color: rgba(244, 67, 54, 0.1); }
+
+#tm-css-config-panel .btn-import-label {
+    line-height: normal;
+}

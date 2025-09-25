@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "CSS Style Editor",
+  "version": "1.0.0",
+  "description": "Edit CSS styles of web elements with a UI",
+  "permissions": [
+    "storage",
+    "tabs",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "action": {
+    "default_title": "Toggle CSS Style Editor"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "styles.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

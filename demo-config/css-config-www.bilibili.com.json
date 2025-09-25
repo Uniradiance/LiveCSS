@@ -1,0 +1,335 @@
+[
+  {
+    "configs": [
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": ".opus-detail",
+        "styles": {
+          "marginTop": "50px",
+          "width": "100%"
+        }
+      },
+      {
+        "isCollapsed": true,
+        "isReplace": true,
+        "selector": "#bili-header-container",
+        "styles": {
+          "display": "none"
+        }
+      },
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": "#app",
+        "styles": {
+          "display": "flex",
+          "justifyContent": "center",
+          "minWidth": "90vw"
+        }
+      },
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": ".launch-bar",
+        "styles": {
+          "minWidth": "240px"
+        }
+      },
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": ".right-sidebar-wrap",
+        "styles": {
+          "bottom": "100px",
+          "marginLeft": "unset",
+          "right": "10px",
+          "top": "unset"
+        }
+      },
+      {
+        "elementIndex": "0",
+        "isCollapsed": true,
+        "isReplace": true,
+        "selector": ".side-toolbar__btn",
+        "styles": {
+          "display": "none"
+        }
+      },
+      {
+        "isCollapsed": true,
+        "isReplace": true,
+        "selector": ".fixed-author-header",
+        "styles": {
+          "display": "none",
+          "position": "absolute",
+          "zIndex": "-999"
+        }
+      },
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": ".side-toolbar.side-toolbar",
+        "styles": {
+          "opacity": "0.3"
+        }
+      },
+      {
+        "isCollapsed": false,
+        "isReplace": false,
+        "selector": ".opus-collection__content",
+        "styles": {
+          "height": "70vh",
+          "marginBottom": "10px",
+          "maxHeight": "unset"
+        }
+      },
+      {
+        "isCollapsed": false,
+        "isReplace": false,
+        "selector": ".opus-collection",
+        "styles": {
+          "height": "unset",
+          "top": "-50vh"
+        }
+      }
+    ],
+    "globalScript": {
+      "code": "const detail = document.querySelector('.bili-opus-view');\ndetail.style.setProperty('background-color', '#000000', 'important');\n// 监听特定的 side-toolbar__top 元素点击事件\ndocument.addEventListener('mouseup', function(event) {\n    // 精确匹配类名\n    if (event.target.classList.contains('side-toolbar__action') || \n        event.target.closest('.side-toolbar__action')) {\n        // 延迟执行滚动，确保DOM更新完成\n        setTimeout(function() {\n            scrollToActiveItem();\n        }, 200);\n    }\n});\n\n    // 定义一个函数来执行滚动逻辑\n    function scrollToActiveItem() {\n        // 1. 找到包含列表的容器\n        // 根据您的描述，这个容器的类是 'opus-collection__content'\n        // 注意：querySelector 返回第一个匹配的元素，querySelectorAll 返回所有匹配的元素列表\n        // 如果有多个 opus-collection__content，您可能需要更精确的选择器或遍历\n        const contentContainer = document.querySelector('.opus-collection__content');\n\n        // 2. 检查容器是否存在\n        if (!contentContainer) {\n            console.warn('未找到类为 opus-collection__content 的容器');\n            return; // 如果没找到容器，就停止执行\n        }\n\n        // 3. 在容器内找到具有 'opus-collection__item active' 类的元素\n        // 使用容器的 .querySelector 方法在其子元素中查找\n        const activeItem = contentContainer.querySelector('.opus-collection__item.active');\n\n        // 4. 检查活跃项是否存在\n        if (!activeItem) {\n            console.warn('在 opus-collection__content 内未找到类为 opus-collection__item active 的元素');\n            return; // 如果没找到活跃项，也停止执行\n        }\n\n        // 5. 计算滚动位置\n        // offsetTop 是元素相对于其 offsetParent (通常是容器) 顶部的距离\n        // scrollIntoView 是更现代且通常更可靠的方法\n        // 如果需要精确控制（例如考虑容器的padding），可以使用 offsetTop\n        // const scrollTopPosition = activeItem.offsetTop;\n\n        // 6. 执行滚动\n        // 方法一：使用 scrollIntoView (推荐，更简洁)\n        // block: 'center' 会将元素滚动到容器的中心\n        // block: 'start' 会将元素滚动到容器的顶部\n        // behavior: 'smooth' 会添加平滑滚动效果\n        activeItem.scrollIntoView({ behavior: 'smooth', block: 'center' });\n\n        // 方法二：手动设置 scrollTop (如果 scrollIntoView 行为不符合预期)\n        // contentContainer.scrollTop = activeItem.offsetTop - contentContainer.offsetTop;\n        // 或者，如果想让 activeItem 在容器顶部对齐：\n        // contentContainer.scrollTop = activeItem.offsetTop - contentContainer.offsetTop;\n        // 或者，如果想让 activeItem 在容器中间对齐：\n        // const containerHeight = contentContainer.clientHeight;\n        // const itemHeight = activeItem.clientHeight;\n        // contentContainer.scrollTop = activeItem.offsetTop - contentContainer.offsetTop - (containerHeight / 2) + (itemHeight / 2);\n\n        console.log('已滚动到活跃章节:', activeItem.querySelector('.opus-collection__item__title-text')?.textContent || '未知章节');\n    }",
+      "enabled": true
+    },
+    "matchPattern": "/opus/*"
+  },
+  {
+    "configs": [
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": ".fresh-home-video-list",
+        "styles": {
+          "height": "auto",
+          "width": "100%"
+        }
+      },
+      {
+        "isCollapsed": false,
+        "isReplace": false,
+        "selector": ".fresh-home-video-list-content",
+        "styles": {
+          "alignItems": "stretch",
+          "display": "grid",
+          "flexDirection": "row",
+          "flexWrap": "wrap",
+          "gap": "16px",
+          "gridAutoRows": "min-content",
+          "gridTemplateColumns": "repeat(auto-fill, minmax(185px, 1fr))",
+          "height": "calc(85vh - 200px)",
+          "overflowX": "hidden",
+          "overflowY": "auto"
+        }
+      },
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": ".fresh-home-video-card-wrapper",
+        "styles": {
+          "padding": "0",
+          "scrollSnapAlign": "none",
+          "width": "auto"
+        }
+      },
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": ".bili-header__banner",
+        "styles": {
+          "minWidth": "556px"
+        }
+      },
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "pseudoStyles": {
+          ":after": {
+            "display": "none"
+          },
+          ":before": {
+            "display": "none"
+          }
+        },
+        "selector": ".fresh-home-video-list.not-empty",
+        "styles": {}
+      },
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": "#i_cecream",
+        "styles": {
+          "minWidth": "556px"
+        }
+      },
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": "body",
+        "styles": {
+          "minWidth": "556px"
+        }
+      },
+      {
+        "isCollapsed": true,
+        "isReplace": true,
+        "selector": ".fresh-home-trending",
+        "styles": {}
+      },
+      {
+        "isCollapsed": false,
+        "isReplace": false,
+        "selector": ".fresh-home-feeds-content",
+        "styles": {
+          "marginTop": "10px"
+        }
+      }
+    ],
+    "globalScript": {
+      "code": "",
+      "enabled": true
+    },
+    "matchPattern": "/"
+  },
+  {
+    "configs": [
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": ".flow-loader",
+        "styles": {
+          "height": "895px",
+          "overflow": "hidden"
+        }
+      },
+      {
+        "elementIndex": "1",
+        "isCollapsed": true,
+        "isReplace": true,
+        "selector": ".nav-tabs__item",
+        "styles": {
+          "display": "none"
+        }
+      },
+      {
+        "elementIndex": "2",
+        "isCollapsed": true,
+        "isReplace": true,
+        "selector": ".nav-tabs__item",
+        "styles": {
+          "display": "none"
+        }
+      },
+      {
+        "elementIndex": "3",
+        "isCollapsed": true,
+        "isReplace": true,
+        "selector": ".nav-tabs__item",
+        "styles": {
+          "display": "none"
+        }
+      },
+      {
+        "elementIndex": "4",
+        "isCollapsed": true,
+        "isReplace": true,
+        "selector": ".nav-tabs__item",
+        "styles": {
+          "display": "none"
+        }
+      },
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": "#app",
+        "styles": {
+          "height": "1118px"
+        }
+      }
+    ],
+    "globalScript": {
+      "code": "if (window.location.pathname != '/v/popular/all') { window.location.replace('/v/popular/all'); }",
+      "enabled": true
+    },
+    "matchPattern": "/v/popular/*"
+  },
+  {
+    "configs": [
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": ".right-container",
+        "styles": {
+          "backgroundColor": "#1f1f1f",
+          "border": "2px solid #333333",
+          "borderRadius": "10px",
+          "height": "unset",
+          "padding": "10px",
+          "position": "fixed",
+          "right": "10px",
+          "top": "10px",
+          "zIndex": "99999"
+        }
+      },
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": "#app",
+        "styles": {
+          "minWidth": "unset"
+        }
+      },
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": ".bili-header",
+        "styles": {
+          "minWidth": "unset"
+        }
+      },
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": ".video-pod__body",
+        "styles": {
+          "maxHeight": "28vh"
+        }
+      },
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": ".right-container-inner",
+        "styles": {
+          "paddingBottom": "unset"
+        }
+      },
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": ".video-pod",
+        "styles": {
+          "marginBottom": "UNSET"
+        }
+      },
+      {
+        "isCollapsed": false,
+        "isReplace": false,
+        "selector": ".launch-bar",
+        "styles": {
+          "minWidth": "240px"
+        }
+      }
+    ],
+    "globalScript": {
+      "code": "(function() {\n    'use strict';\n\n    // --- DOM Elements & State ---\n    const leftPanel = document.querySelector('.right-container');\n    if (!leftPanel) {\n        console.warn('Live Editor Script: Target element \".left\" not found. Script will not run.');\n        return;\n    }\n\n    let controlButton;\n    let isDragging = false;\n    let wasDragging = false; // Differentiates a drag from a click\n    let dragStartPos = { x: 0, y: 0 };\n    let elementInitialPos = { x: 0, y: 0 };\n\n    // --- Functions ---\n\n    /**\n     * Toggles the visibility of the control panel and the button with animations.\n     * @param {boolean} show - True to show the panel, false to hide it.\n     */\n    function togglePanel(show) {\n        if (show) {\n            leftPanel.classList.remove('hidden');\n            leftPanel.classList.add('show');\n            controlButton.classList.add('hidden');\n            controlButton.classList.remove('show');\n        } else {\n            leftPanel.classList.remove('show');\n            leftPanel.classList.add('hidden');\n            controlButton.classList.remove('hidden');\n            controlButton.classList.add('show');\n        }\n    }\n\n    /**\n     * Injects the necessary CSS for animations and styles into the document head.\n     */\n    function injectStyles() {\n        const style = document.createElement('style');\n        style.textContent = `\n            #optimized-control-button-wrapper.hidden, .right-container.hidden {\n                opacity: 0 !important;\n                transform: translateX(100%) !important;\n                transition: opacity 0.5s, transform 0.5s;\n                pointer-events: none;\n            }\n            #optimized-control-button-wrapper.show, .right-container.show {\n                opacity: 1 !important;\n                transform: translateX(0) !important;\n                transition: opacity 0.5s, transform 0.5s;\n                pointer-events: auto;\n            }\n        `;\n        document.head.appendChild(style);\n    }\n    \n    /**\n     * Creates and appends the floating control button to the body.\n     * @returns {HTMLElement} The created button container element.\n     */\n    function createControlButton() {\n        const buttonSize = 45;\n        const buttonHTML = `\n            <div class=\"no-print\" id=\"optimized-control-button-wrapper\" style=\"position: fixed;top: 40px;right: 5px;cursor: pointer;z-index: 2147483647;user-select: none;border: 2px solid #777777;border-radius: 50%;\">\n                <div id=\"popup-button\" style=\"width: ${buttonSize}px; height: ${buttonSize}px; background: #3b3434; border:1px solid #453e3e; display: flex; align-items: center; justify-content: center; border-radius: 50%; position: relative;\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"currentColor\"><path d=\"M15.0004 2.84711V4.86312C15.0004 5.25164 15.2255 5.605 15.5775 5.7693L15.9865 5.96013C15.9009 7.36343 15.4285 8.59569 14.7433 9.48646C13.985 10.4723 13.0066 11 12.0004 11C10.9942 11 10.0158 10.4723 9.25751 9.48646C8.57231 8.59569 8.09992 7.36343 8.01438 5.96013L8.42331 5.7693C8.77538 5.605 9.00042 5.25164 9.00042 4.86312V2.84711C9.00042 2.35827 9.35407 1.94216 9.83969 1.88611C11.2822 1.71961 12.7187 1.71961 14.1612 1.88611C14.6468 1.94216 15.0004 2.35827 15.0004 2.84711ZM6.09747 6.85469L2.8504 8.36999C2.10333 8.71862 1.77764 9.60481 2.12113 10.3542L6.59937 20.125C6.84375 20.6581 7.37646 21 7.96297 21H16.0379C16.6244 21 17.1571 20.6581 17.4015 20.125L21.8797 10.3542C22.2232 9.60481 21.8975 8.71862 21.1504 8.36999L17.9034 6.85469C17.6905 8.3225 17.1365 9.65563 16.3286 10.7059C15.4157 11.8926 14.1482 12.7481 12.6811 12.9529L14.189 15.0641C14.3753 15.3248 14.3753 15.6751 14.189 15.9359L12.2039 18.7152C12.1042 18.8548 11.8967 18.8548 11.797 18.7152L9.8118 15.9359C9.62554 15.6751 9.62554 15.3248 9.8118 15.0641L11.3198 12.9529C9.85266 12.7481 8.58516 11.8926 7.67227 10.7059C6.86438 9.65563 6.3103 8.3225 6.09747 6.85469Z\"></path></svg></div>\n            </div>\n        `;\n        document.body.insertAdjacentHTML('beforeend', buttonHTML);\n        const button = document.getElementById('optimized-control-button-wrapper');\n        button.classList.add('show');\n        const popupButton = document.getElementById('popup-button');\n        const avatar = document.querySelector('.up-avatar-wrap');\n        if (!avatar) {\n            return button;\n        }\n        new MutationObserver((mutations) => {\n            mutations.forEach((mutation) => {\n                if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {\n                    popupButton.appendChild(avatar.children[0].children[0].children[0].cloneNode(true));\n                    popupButton.children[1].style.pointerEvents = 'none';\n                }\n            });\n        }).observe(avatar, { childList: true, subtree: true });\n        return button;\n    }\n\n    /**\n     * Handles the start of a drag operation (mousedown or touchstart).\n     * @param {MouseEvent|TouchEvent} e The event object.\n     */\n    function onDragStart(e) {\n        isDragging = true;\n        wasDragging = false;\n\n        const eventPos = e.touches ? e.touches[0] : e;\n        dragStartPos = { x: eventPos.clientX, y: eventPos.clientY };\n        elementInitialPos = { \n            x: parseFloat(window.getComputedStyle(controlButton).right), \n            y: controlButton.offsetTop \n        };\n\n        document.addEventListener('mousemove', onDragMove);\n        document.addEventListener('mouseup', onDragEnd);\n        document.addEventListener('touchmove', onDragMove, { passive: false });\n        document.addEventListener('touchend', onDragEnd);\n    }\n    \n    /**\n     * Handles the drag movement (mousemove or touchmove).\n     * @param {MouseEvent|TouchEvent} e The event object.\n     */\n    function onDragMove(e) {\n        if (!isDragging) return;\n        wasDragging = true; // Any movement signifies a drag\n        e.preventDefault(); // Prevent page scrolling on touch devices\n        \n        const eventPos = e.touches ? e.touches[0] : e;\n        const dx = eventPos.clientX - dragStartPos.x;\n        const dy = eventPos.clientY - dragStartPos.y;\n        \n        // Update 'right' property. Moving mouse left (negative dx) increases 'right'.\n        controlButton.style.right = `${elementInitialPos.x - dx}px`;\n        controlButton.style.top = `${elementInitialPos.y + dy}px`;\n    }\n    \n    /**\n     * Handles the end of a drag operation (mouseup or touchend).\n     */\n    function onDragEnd() {\n        if (!isDragging) return;\n        isDragging = false;\n        \n        controlButton.style.right = '5px'; // Snap back to the side\n        \n        document.removeEventListener('mousemove', onDragMove);\n        document.removeEventListener('mouseup', onDragEnd);\n        document.removeEventListener('touchmove', onDragMove);\n        document.removeEventListener('touchend', onDragEnd);\n    }\n    \n    /**\n     * Handles clicks outside the panel to close it.\n     * @param {MouseEvent} e The event object.\n     */\n    function onGlobalClick(e) {\n        if (leftPanel.classList.contains('hidden')) return;\n        if (e.target.closest('#optimized-control-button-wrapper') || e.target.closest('.right-container')) return;\n        togglePanel(false);\n    }\n\n    /**\n     * Main initialization function.\n     */\n    function init() {\n        injectStyles();\n        controlButton = createControlButton();\n\n        togglePanel(false); // Sync initial UI states\n\n        leftPanel.style.transform = 'translateX(100%)';\n\n        leftPanel.style.opacity= '0';\n        // --- Event Listeners ---\n        controlButton.addEventListener('click', (e) => {\n            if (wasDragging) {\n                wasDragging = false; // Reset for next interaction\n                return; // Suppress click after a drag\n            }\n            e.stopPropagation();\n            togglePanel(true);\n        });\n        \n        controlButton.addEventListener('mousedown', onDragStart);\n        controlButton.addEventListener('touchstart', onDragStart);\n\n        document.addEventListener('click', onGlobalClick);\n    }\n    \n    // Defer initialization until the DOM is fully loaded.\n    if (document.readyState === 'loading') {\n        document.addEventListener('DOMContentLoaded', init);\n    } else {\n        init();\n    }\n})();",
+      "enabled": true
+    },
+    "matchPattern": "/video/*"
+  }
+]

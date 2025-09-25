@@ -1,0 +1,97 @@
+[
+  {
+    "configs": [
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": ".left",
+        "styles": {
+          "backgroundColor": "#1a1a1a",
+          "border": "2px solid #333333",
+          "borderRadius": "10px",
+          "maxHeight": "80vh",
+          "overflowY": "auto",
+          "padding": "10px",
+          "position": "fixed",
+          "right": "4vw",
+          "zIndex": "9999"
+        }
+      },
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": ".right",
+        "styles": {
+          "display": "none"
+        }
+      },
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": "main",
+        "styles": {
+          "marginRight": "unset"
+        }
+      },
+      {
+        "elementIndex": "0",
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": ".bili-dyn-sidebar__btn",
+        "styles": {
+          "display": "none"
+        }
+      },
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": ".bili-dyn-live-users",
+        "styles": {
+          "transformStyle": "none !important"
+        }
+      },
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": ".custom-navbar",
+        "styles": {
+          "borderRadius": "10px",
+          "justifyContent": "center",
+          "left": "50%",
+          "transform": "translateX(-50%)"
+        }
+      },
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": ".launch-bar",
+        "styles": {
+          "minWidth": "240px"
+        }
+      },
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": ".bili-dyn-home--member",
+        "styles": {
+          "paddingLeft": "unset"
+        }
+      },
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": "#app",
+        "styles": {
+          "display": "flex",
+          "justifyContent": "center",
+          "minWidth": "90vw"
+        }
+      }
+    ],
+    "globalScript": {
+      "code": "(function() {\n    'use strict';\n\n    // --- DOM Elements & State ---\n    const leftPanel = document.querySelector('.left');\n    if (!leftPanel) {\n        console.warn('Live Editor Script: Target element \".left\" not found. Script will not run.');\n        return;\n    }\n\n    let controlButton;\n    let isDragging = false;\n    let wasDragging = false; // Differentiates a drag from a click\n    let dragStartPos = { x: 0, y: 0 };\n    let elementInitialPos = { x: 0, y: 0 };\n\n    // --- Functions ---\n\n    /**\n     * Toggles the visibility of the control panel and the button with animations.\n     * @param {boolean} show - True to show the panel, false to hide it.\n     */\n    function togglePanel(show) {\n        if (show) {\n            leftPanel.classList.remove('hidden');\n            leftPanel.classList.add('show');\n            controlButton.classList.add('hidden');\n            controlButton.classList.remove('show');\n        } else {\n            leftPanel.classList.remove('show');\n            leftPanel.classList.add('hidden');\n            controlButton.classList.remove('hidden');\n            controlButton.classList.add('show');\n        }\n    }\n\n    /**\n     * Injects the necessary CSS for animations and styles into the document head.\n     */\n    function injectStyles() {\n        const style = document.createElement('style');\n        style.textContent = `\n            #optimized-control-button-wrapper.hidden, .left.hidden {\n                opacity: 0 !important;\n                transform: translateX(100%);\n                transition: opacity 0.5s, transform 0.5s;\n                pointer-events: none;\n            }\n            #optimized-control-button-wrapper.show, .left.show {\n                opacity: 1 !important;\n                transform: translateX(0);\n                transition: opacity 0.5s, transform 0.5s;\n                pointer-events: auto;\n            }\n            /* Site-specific style */\n            .bili-dyn-live-users.hidn {\n                transform: none !important;\n            }\n        `;\n        document.head.appendChild(style);\n    }\n    \n    /**\n     * Creates and appends the floating control button to the body.\n     * @returns {HTMLElement} The created button container element.\n     */\n    function createControlButton() {\n        const buttonSize = 32;\n        const buttonHTML = `\n            <div class=\"no-print\" id=\"optimized-control-button-wrapper\" style=\"position: fixed; top: 6vh; right: 5px; cursor: pointer; z-index: 2147483647; user-select: none;\">\n                <div id=\"popup-button\" style=\"width: ${buttonSize}px; height: ${buttonSize}px; background: #3b3434; border:1px solid #453e3e; display: flex; align-items: center; justify-content: center; border-radius: 50%; position: relative;\">\n                    <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"currentColor\"><path d=\"M11.9996 0.5L16.2256 6.68342L23.4123 8.7918L18.8374 14.7217L19.053 22.2082L11.9996 19.6897L4.94617 22.2082L5.16179 14.7217L0.586914 8.7918L7.7736 6.68342L11.9996 0.5ZM11.9996 4.044L9.02186 8.40151L3.95659 9.887L7.18152 14.0655L7.02859 19.34L11.9996 17.566L16.9696 19.34L16.8177 14.0655L20.0416 9.887L14.9773 8.40151L11.9996 4.044ZM9.99959 12C9.99959 13.1046 10.895 14 11.9996 14C13.1042 14 13.9996 13.1046 13.9996 12H15.9996C15.9996 14.2091 14.2087 16 11.9996 16C9.79045 16 7.99959 14.2091 7.99959 12H9.99959Z\"></path></svg>\n                </div>\n            </div>\n        `;\n        document.body.insertAdjacentHTML('beforeend', buttonHTML);\n        const button = document.getElementById('optimized-control-button-wrapper');\n        button.classList.add('show');\n        return button;\n    }\n\n    /**\n     * Handles the start of a drag operation (mousedown or touchstart).\n     * @param {MouseEvent|TouchEvent} e The event object.\n     */\n    function onDragStart(e) {\n        isDragging = true;\n        wasDragging = false;\n\n        const eventPos = e.touches ? e.touches[0] : e;\n        dragStartPos = { x: eventPos.clientX, y: eventPos.clientY };\n        elementInitialPos = { \n            x: parseFloat(window.getComputedStyle(controlButton).right), \n            y: controlButton.offsetTop \n        };\n\n        document.addEventListener('mousemove', onDragMove);\n        document.addEventListener('mouseup', onDragEnd);\n        document.addEventListener('touchmove', onDragMove, { passive: false });\n        document.addEventListener('touchend', onDragEnd);\n        \n        const dyn = document.querySelector('.bili-dyn-live-users');\n        if (dyn) dyn.classList.add('hidn');\n    }\n    \n    /**\n     * Handles the drag movement (mousemove or touchmove).\n     * @param {MouseEvent|TouchEvent} e The event object.\n     */\n    function onDragMove(e) {\n        if (!isDragging) return;\n        wasDragging = true; // Any movement signifies a drag\n        e.preventDefault(); // Prevent page scrolling on touch devices\n        \n        const eventPos = e.touches ? e.touches[0] : e;\n        const dx = eventPos.clientX - dragStartPos.x;\n        const dy = eventPos.clientY - dragStartPos.y;\n        \n        // Update 'right' property. Moving mouse left (negative dx) increases 'right'.\n        controlButton.style.right = `${elementInitialPos.x - dx}px`;\n        controlButton.style.top = `${elementInitialPos.y + dy}px`;\n    }\n    \n    /**\n     * Handles the end of a drag operation (mouseup or touchend).\n     */\n    function onDragEnd() {\n        if (!isDragging) return;\n        isDragging = false;\n        \n        controlButton.style.right = '5px'; // Snap back to the side\n        \n        document.removeEventListener('mousemove', onDragMove);\n        document.removeEventListener('mouseup', onDragEnd);\n        document.removeEventListener('touchmove', onDragMove);\n        document.removeEventListener('touchend', onDragEnd);\n    }\n    \n    /**\n     * Handles clicks outside the panel to close it.\n     * @param {MouseEvent} e The event object.\n     */\n    function onGlobalClick(e) {\n        if (leftPanel.classList.contains('hidden')) return;\n        if (e.target.closest('#optimized-control-button-wrapper') || e.target.closest('.left')) return;\n        togglePanel(false);\n    }\n\n    /**\n     * Adjusts a navbar width to match the main content area.\n     * Retries if elements aren't found, for dynamically loaded content.\n     */\n    function updateNavbarSize() {\n        const main = document.querySelector('main');\n        const navbar = document.querySelector('.custom-navbar');\n        if (main && navbar) {\n            const mainWidth = main.getBoundingClientRect().width;\n            navbar.style.width = `${mainWidth}px`;\n        } else {\n            setTimeout(updateNavbarSize, 100);\n        }\n    }\n    \n    /**\n     * Main initialization function.\n     */\n    function init() {\n        injectStyles();\n        controlButton = createControlButton();\n\n        leftPanel.classList.add('hidden');\n        togglePanel(false); // Sync initial UI states\n\n        // --- Event Listeners ---\n        controlButton.addEventListener('click', (e) => {\n            if (wasDragging) {\n                wasDragging = false; // Reset for next interaction\n                return; // Suppress click after a drag\n            }\n            e.stopPropagation();\n            togglePanel(true);\n        });\n        \n        controlButton.addEventListener('mousedown', onDragStart);\n        controlButton.addEventListener('touchstart', onDragStart);\n\n        document.addEventListener('click', onGlobalClick);\n        window.addEventListener('resize', updateNavbarSize);\n        \n        // --- Site-specific customizations ---\n        const header = document.querySelector('#bili-header-container');\n        if (header) header.innerHTML = '';\n        \n        updateNavbarSize();\n    }\n    \n    // Defer initialization until the DOM is fully loaded.\n    if (document.readyState === 'loading') {\n        document.addEventListener('DOMContentLoaded', init);\n    } else {\n        init();\n    }\n\n})();",
+      "enabled": true
+    },
+    "matchPattern": "/"
+  }
+]
