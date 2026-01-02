@@ -209,37 +209,35 @@
         }
       },
       {
-        "elementIndex": "1",
+        "elementIndex": "",
         "isCollapsed": true,
         "isReplace": true,
-        "selector": ".nav-tabs__item",
+        "selector": ".nav-tabs",
         "styles": {
           "display": "none"
         }
       },
       {
-        "elementIndex": "2",
-        "isCollapsed": true,
-        "isReplace": true,
-        "selector": ".nav-tabs__item",
+        "isCollapsed": false,
+        "isReplace": false,
+        "selector": ".popular-video-container",
         "styles": {
-          "display": "none"
+          "minHeight": "unset"
         }
       },
       {
-        "elementIndex": "3",
         "isCollapsed": true,
-        "isReplace": true,
-        "selector": ".nav-tabs__item",
+        "isReplace": false,
+        "selector": ".popular-container",
         "styles": {
-          "display": "none"
+          "padding": "0px",
+          "width": "unset"
         }
       },
       {
-        "elementIndex": "4",
         "isCollapsed": true,
         "isReplace": true,
-        "selector": ".nav-tabs__item",
+        "selector": ".bili-footer",
         "styles": {
           "display": "none"
         }
@@ -247,9 +245,25 @@
       {
         "isCollapsed": true,
         "isReplace": false,
-        "selector": "#app",
+        "selector": ".bili-header",
         "styles": {
-          "height": "1118px"
+          "minWidth": "unset"
+        }
+      },
+      {
+        "isCollapsed": true,
+        "isReplace": false,
+        "selector": ".bili-header__banner",
+        "styles": {
+          "minWidth": "unset"
+        }
+      },
+      {
+        "isCollapsed": true,
+        "isReplace": true,
+        "selector": ".popular-tips",
+        "styles": {
+          "display": "none"
         }
       }
     ],
